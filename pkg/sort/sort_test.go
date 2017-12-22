@@ -39,3 +39,23 @@ func TestShellSort(t *testing.T) {
 		t.Errorf("Expect: %+v, Got: %+v", dn1, dn2)
 	}
 }
+
+func TestMergeSortTD(t *testing.T) {
+	dn1 := NewRandNums(SIZE)
+	dn2 := CopyRandNums(dn1)
+	sort.Ints(dn1)
+	MergeSortTD(dn2)
+	if !reflect.DeepEqual(dn1, dn2) {
+		t.Errorf("Expect: %+v, Got: %+v", dn1, dn2)
+	}
+}
+
+func TestQuickSort(t *testing.T) {
+	dn1 := NewRandNums(SIZE)
+	dn2 := CopyRandNums(dn1)
+	sort.Ints(dn1)
+	QuickSort(dn2)
+	if !reflect.DeepEqual(dn1, dn2) {
+		t.Errorf("Expect: %+v, Got: %+v", dn1, dn2)
+	}
+}
