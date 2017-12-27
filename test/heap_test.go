@@ -1,9 +1,9 @@
-package heap
+package heapTest
 
 import (
-	"container/heap"
-	"fmt"
 	"testing"
+
+	"../pkg/heap"
 )
 
 type DummyIntHeap []int
@@ -34,9 +34,24 @@ func (h *DummyIntHeap) Pop() interface{} {
 
 func TestHeap(t *testing.T) {
 	h := &DummyIntHeap{}
-	heap.Init(h)
 	heap.Push(h, 1)
-	heap.Push(h, 2)
 	heap.Push(h, -1)
-	fmt.Printf("%+v", h)
+	heap.Push(h, 3)
+	v := heap.Pop(h)
+
+	if v != -1 {
+		t.Errorf("heap.Pop() method is not right")
+		t.Errorf("Expect: %d, got: %d", -1, v)
+	}
+
+	h = &DummyIntHeap{1, 7, 9, 3, 2, 2, 5, 4, 6, 8}
+	heap.Init(h)
+	expected := []int{1, 2, 2, 3, 4, 5, 6, 7, 8, 9}
+	for i := 0; h.Len() > 0; i++ {
+		v := heap.Pop(h)
+		if expected[i] != v {
+			t.Errorf("Expected: %+v, got: %+v\n", expected, *h)
+			break
+		}
+	}
 }
