@@ -1,8 +1,6 @@
 package heap
 
-import (
-	"sort"
-)
+import "sort"
 
 type Interface interface {
 	sort.Interface
@@ -23,33 +21,36 @@ func Push(h Interface, x interface{}) {
 }
 
 func Pop(h Interface) interface{} {
-	n := h.Len() - 1
-	h.Swap(0, n)
-	down(h, 0, n)
+	lastIndex := h.Len() - 1
+	h.Swap(0, lastIndex)
+	down(h, 0, lastIndex)
 	return h.Pop()
 }
 
-func up(h Interface, k int) {
+func up(h Interface, i int) {
 	for {
-		p := (k - 1) / 2
-		if p == k || !h.Less(k, p) {
+		p := (i - 1) / 2
+		if i == 0 || h.Less(p, i) {
 			break
 		}
-		h.Swap(p, k)
-		k = p
+		h.Swap(i, p)
+		i = p
 	}
 }
 
-func down(h Interface, k, n int) {
-	for (2*k + 1) < n {
-		j := 2*k + 1
-		if j+1 < n && h.Less(j+1, j) {
-			j++
-		}
-		if !h.Less(j, k) {
+func down(h Interface, i, n int) {
+	for {
+		l := 2*i + 1
+		if l >= n {
 			break
 		}
-		h.Swap(k, j)
-		k = j
+		if l+1 < n && h.Less(l+1, l) {
+			l++
+		}
+		if !h.Less(l, i) {
+			break
+		}
+		h.Swap(i, l)
+		i = l
 	}
 }
