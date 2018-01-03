@@ -1,14 +1,14 @@
 package binarySearchTree
 
+type Key interface {
+	Less(key interface{}) bool
+}
+
 type node struct {
 	key   Key
 	value interface{}
 	left  *node
 	right *node
-}
-
-type Key interface {
-	Less(key interface{}) bool
 }
 
 type BinarySearchTree struct {
@@ -41,29 +41,22 @@ func (bst *BinarySearchTree) Include(key Key) bool {
 }
 
 func (bst *BinarySearchTree) Insert(key Key, value interface{}) {
-	n := bst.Root
-	newNode := &node{key, value, nil, nil}
-
-	if n == nil {
-		bst.Root = newNode
-		return
-	}
-
-	for {
-		if key.Less(n.key) {
-			if n.left == nil {
-				n.left = newNode
-				return
-			}
-			n = n.left
-		} else if n.key.Less(key) {
-			if n.right == nil {
-				n.right = newNode
-				return
-			}
-			n = n.right
-		} else {
-			break
+	var insert func(n *node, key Key, value interface{}) *node
+	insert = func(n *node, key Key, value interface{}) *node {
+		if n == nil {
+			newNode := &node{key, value, nil, nil}
+			return newNode
 		}
+		if key.Less(n.key) {
+			n.left = insert(n.left, key, value)
+		} else if n.key.Less(key) {
+			n.right = insert(n.right, key, value)
+		} else {
+			n.value = value
+		}
+		return n
 	}
+
+	n := bst.Root
+	bst.Root = insert(n, key, value)
 }
