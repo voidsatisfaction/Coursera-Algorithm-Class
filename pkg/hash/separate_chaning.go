@@ -4,6 +4,12 @@ import (
 	"container/list"
 )
 
+type node struct {
+	key Key
+
+	val interface{}
+}
+
 type SCHash struct {
 	M int
 
@@ -21,7 +27,7 @@ func NewSeparateChainingHash() *SCHash {
 	}
 }
 
-func (sch *SCHash) Put(hk HashKey, val interface{}) {
+func (sch *SCHash) Put(hk Key, val interface{}) {
 	i := (hk.hashCode() % M)
 
 	for e := sch.Data[i].Front(); e != nil; e = e.Next() {
@@ -38,7 +44,7 @@ func (sch *SCHash) Put(hk HashKey, val interface{}) {
 	sch.Data[i].PushFront(newNode)
 }
 
-func (sch *SCHash) Get(hk HashKey) (interface{}, bool) {
+func (sch *SCHash) Get(hk Key) (interface{}, bool) {
 	i := (hk.hashCode() % M)
 
 	for e := sch.Data[i].Front(); e != nil; e = e.Next() {
