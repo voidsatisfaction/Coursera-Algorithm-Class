@@ -1,7 +1,6 @@
 package hash
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -49,7 +48,6 @@ func TestSeparateChaningHashTest(t *testing.T) {
 
 	for _, test := range successTests {
 		key, expectOk, expectVal := test.key, test.expectOk, test.expectVal
-		fmt.Println(key.hashCode())
 		val, ok := sch.Get(key)
 		if !reflect.DeepEqual(expectVal, val) {
 			t.Errorf("value is not as expected")

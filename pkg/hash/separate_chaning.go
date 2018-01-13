@@ -4,19 +4,6 @@ import (
 	"container/list"
 )
 
-type HashKey interface {
-	hashCode() int
-	equals(hk interface{}) bool
-}
-
-type node struct {
-	key HashKey
-
-	val interface{}
-}
-
-const M int = 30001
-
 type SCHash struct {
 	M int
 
