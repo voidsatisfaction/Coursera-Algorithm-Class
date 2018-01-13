@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestSeparateChaningHashTest(t *testing.T) {
+func TestLinearProbeHashTest(t *testing.T) {
 	// test for get success
 	successTests := []struct {
 		key       stringHashKey
@@ -18,16 +18,16 @@ func TestSeparateChaningHashTest(t *testing.T) {
 		{stringHashKey("wkfm4io3fj3432341231zcxv9fknalkdsfl"), true, true},
 	}
 
-	sch := NewSeparateChainingHash()
+	lph := NewLinearProbeHash()
 
-	sch.Put(stringHashKey("abc"), "hello")
-	sch.Put(stringHashKey("ccccsdcasd"), []int{1, 2, 3})
-	sch.Put(stringHashKey("222"), "hihihi")
-	sch.Put(stringHashKey("wkfm4io3fj3432341231zcxv9fknalkdsfl"), true)
+	lph.Put(stringHashKey("abc"), "hello")
+	lph.Put(stringHashKey("ccccsdcasd"), []int{1, 2, 3})
+	lph.Put(stringHashKey("222"), "hihihi")
+	lph.Put(stringHashKey("wkfm4io3fj3432341231zcxv9fknalkdsfl"), true)
 
 	for _, test := range successTests {
 		key, expectOk, expectVal := test.key, test.expectOk, test.expectVal
-		val, ok := sch.Get(key)
+		val, ok := lph.Get(key)
 		if !reflect.DeepEqual(expectVal, val) {
 			t.Errorf("value is not as expected")
 			t.Errorf("expectVal: %+v, got: %+v", expectVal, val)
@@ -51,7 +51,7 @@ func TestSeparateChaningHashTest(t *testing.T) {
 
 	for _, test := range failTests {
 		key, expectOk := test.key, test.expectOk
-		_, ok := sch.Get(key)
+		_, ok := lph.Get(key)
 
 		if ok != expectOk {
 			t.Errorf("ok is not as expected")
