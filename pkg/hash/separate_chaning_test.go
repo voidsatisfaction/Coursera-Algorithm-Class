@@ -59,3 +59,37 @@ func TestSeparateChaningHashTest(t *testing.T) {
 		}
 	}
 }
+
+func TestSeparateChaningHashDel(t *testing.T) {
+	successTests := []struct {
+		key      stringHashKey
+		expectOk bool
+	}{
+		{stringHashKey("abc"), true},
+		{stringHashKey("wlefkmwelmkl"), false},
+		{stringHashKey("elkfmwlmf2349u98sufdjs"), false},
+		{stringHashKey("exsit"), true},
+		{stringHashKey("happy-birth-day...!!!"), true},
+	}
+
+	sch := NewSeparateChainingHash()
+	sch.Put(stringHashKey("abc"), "abc")
+	sch.Put(stringHashKey("wlefkmwelmkl"), "abc")
+	sch.Put(stringHashKey("elkfmwlmf2349u98sufdjs"), "abc")
+	sch.Put(stringHashKey("exsit"), "abc")
+	sch.Put(stringHashKey("happy-birth-day...!!!"), "abc")
+
+	sch.Del(stringHashKey("abc"))
+	sch.Del(stringHashKey("wlefkmwelmkl"))
+	sch.Del(stringHashKey("elkfmwlmf2349u98sufdjs"))
+
+	sch.Put(stringHashKey("abc"), "abc")
+
+	for _, test := range successTests {
+		key, expectOk := test.key, test.expectOk
+		if _, ok := sch.Get(key); ok != expectOk {
+			t.Errorf("hash delete error")
+			t.Errorf("Expect: %+v, got: %+v", expectOk, ok)
+		}
+	}
+}

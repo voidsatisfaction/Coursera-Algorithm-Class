@@ -55,3 +55,17 @@ func (sch *SCHash) Get(hk Key) (interface{}, bool) {
 
 	return nil, false
 }
+
+func (sch *SCHash) Del(hk Key) {
+	i := (hk.hashCode() % M)
+
+	l := sch.Data[i]
+	for e := sch.Data[i].Front(); e != nil; e = e.Next() {
+		if e.Value.(*node).key == hk {
+			l.Remove(e)
+			if e.Next() != nil {
+				l.MoveToBack(e.Next())
+			}
+		}
+	}
+}
