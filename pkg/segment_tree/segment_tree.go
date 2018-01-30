@@ -51,7 +51,10 @@ func (segTree segmentTree) Get(st, ed, tst, ted, node int) int {
 	} else if tst >= mid+1 {
 		return segTree.Get(mid+1, ed, tst, ted, 2*node+1)
 	} else {
-		return max(segTree.Get(st, mid, tst, ted, 2*node), segTree.Get(mid+1, ed, tst, ted, 2*node+1))
+		return max(
+			segTree.Get(st, mid, tst, ted, 2*node),
+			segTree.Get(mid+1, ed, tst, ted, 2*node+1),
+		)
 	}
 }
 
@@ -67,9 +70,15 @@ func (segTree segmentTree) Update(st, ed, i, newVal, node int) int {
 
 	mid := (st + ed) / 2
 	if i <= mid {
-		segTree[node] = max(segTree.Update(st, mid, i, newVal, 2*node), segTree[2*node+1])
+		segTree[node] = max(
+			segTree.Update(st, mid, i, newVal, 2*node),
+			segTree[2*node+1],
+		)
 	} else if i >= mid+1 {
-		segTree[node] = max(segTree[2*node], segTree.Update(mid+1, ed, i, newVal, 2*node+1))
+		segTree[node] = max(
+			segTree[2*node],
+			segTree.Update(mid+1, ed, i, newVal, 2*node+1),
+		)
 	}
 	return segTree[node]
 }
