@@ -41,6 +41,10 @@ func (segTree segmentTree) Get(st, ed, tst, ted, node int) int {
 		return segTree[node]
 	}
 
+	if tst > ed || ted < st {
+		return -987654321
+	}
+
 	mid := (st + ed) / 2
 	if ted <= mid {
 		return segTree.Get(st, mid, tst, ted, 2*node)
@@ -55,6 +59,10 @@ func (segTree segmentTree) Update(st, ed, i, newVal, node int) int {
 	if st == i && ed == i {
 		segTree[node] = newVal
 		return newVal
+	}
+
+	if i < st || i > ed {
+		return -987654321
 	}
 
 	mid := (st + ed) / 2
